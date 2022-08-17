@@ -1,1 +1,1 @@
-Koordinaatti(2, 1) on polygonin reunaviivan päällä
+Koordinaatti(5, 4) on polygonin sisäpuolella

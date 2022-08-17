@@ -1,3 +1,4 @@
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -5,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Task1 {
+public class CheckCoordinate {
     private static boolean isInside;
     private static boolean isOnSide;
     private static final List<Coordinate> polygonCoordinates = new ArrayList<>();

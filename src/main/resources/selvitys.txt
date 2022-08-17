@@ -1,1 +1,1 @@
-Koordinaatti(2, 1) on polygonin reunaviivan päällä
+Koordinaatti(6, 3) on polygonin reunaviivan päällä

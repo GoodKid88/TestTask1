@@ -17,37 +17,65 @@ public class Coordinate {
         return super.equals(o);
     }
 
-    public static boolean isCoordinateInsidePolygon(Coordinate coordinate, List<Coordinate> list) {
-        int counter = 0;
-        for (Coordinate value : list) {
-            if (coordinate.x > value.x)
-                counter++;
-            if (coordinate.y > value.y)
-                counter++;
+    public static boolean isCoordinateInsidePolygon(Coordinate coordinate, List<Coordinate> polygon) {
+        for (int i = 0; i < polygon.size() - 1; i++) {
+            if (checkCoordinate(polygon.get(i), polygon.get(i + 1), coordinate) != 1) {
+                return !isCoordinateOnPolygonSide(coordinate, polygon);
+            }
         }
-        return counter % 2 == 0 && !isCoordinateOnPolygonSide(coordinate, list);
+        return false;
     }
 
-    public static boolean isCoordinateOnPolygonApex(Coordinate coordinate, List<Coordinate> list) {
-        return list.contains(coordinate);
+    public static int checkCoordinate(Coordinate a, Coordinate b, Coordinate coordinate) {
+        long ax = a.x - coordinate.x;
+        long ay = a.y - coordinate.y;
+        long bx = b.x - coordinate.x;
+        long by = b.y - coordinate.y;
+        //Alussa tarkistetaan, onko segmentti (a,b)
+        // tiukasti säteen toisella puolella?
+        // Tässä tapauksessa risteystä ei ole.
+        if (ay * by > 0)
+            return 1;
+        //Tarkistamme tapauksen, jossa piste c on suoralla (a,b).
+        // Vastaus nolla voidaan välttää vain,
+        // jos pisteet sijaitsevat samalla puolella y-akselia.
+        int s = Long.signum(ax * by - ay * bx);
+        if (s == 0)
+        {
+            if (ax * bx <= 0)
+                return 0;
+            return 1;
+        }
+        //koodi, jolla tarkistetaan säteen ja segmentin leikkauspiste.
+        // S:n merkki riippuu siitä, mikä piste on säteen alapuolella.
+        if (ay < 0)
+            return -s;
+        if (by < 0)
+            return s;
+        return 1;
     }
 
-    public static boolean isCoordinateOnPolygonSide(Coordinate coordinate, List<Coordinate> list) {
-        //(y1-y2)*x + (x2 - x1)*y + (x1y2 - x2y1) = 0
+    public static boolean isCoordinateOnPolygonApex(Coordinate coordinate, List<Coordinate> polygon) {
+        return polygon.contains(coordinate);
+    }
+
+    public static boolean isCoordinateOnPolygonSide(Coordinate coordinate, List<Coordinate> polygon) {
+        //Kolineaaristen vektorien tarkistus:
         //(x-x1)(y2-y1)-(y-y1)(x2-x1) = 0
-        //x1 < x < x2 , x2 < x< x1
-        for (int i = 0; i < list.size() - 1; i++) {
+        //tarkista, onko piste janalla
+        //x1<= x <= x2 ja y1 <= y <= y2
+        for (int i = 0; i < polygon.size() - 1; i++) {
             int x = coordinate.x;
             int y = coordinate.y;
-            int x1 = list.get(i).x;
-            int y1 = list.get(i).y;
-            int x2 = list.get(i + 1).x;
-            int y2 = list.get(i + 1).y;
+            int x1 = polygon.get(i).x;
+            int y1 = polygon.get(i).y;
+            int x2 = polygon.get(i + 1).x;
+            int y2 = polygon.get(i + 1).y;
             if ((x - x1) * (y2 - y1) - (y - y1) * (x2 - x1) == 0) {
-                if (x1 < x && x < x2 || x2 < x && x < x1)
+                if (x1 <= x && x <= x2 && y1 <= y && y <= y2)
                     return true;
             }
-            if (isCoordinateOnPolygonApex(coordinate, list))
+            if (isCoordinateOnPolygonApex(coordinate, polygon))
                 return true;
         }
         return false;

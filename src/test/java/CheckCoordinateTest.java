@@ -7,27 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Task1Test {
+public class CheckCoordinateTest {
+    private static List<Coordinate> polygon;
+
     @Test
     public void testReadPolygonFile() throws FileNotFoundException {
+        polygon = new ArrayList<>();
+        polygon.add(new Coordinate(3, 3));
+        polygon.add(new Coordinate(5, 5));
+        polygon.add(new Coordinate(6, 5));
+        polygon.add(new Coordinate(5, 6));
         File file = new File("src/test/resources/testPolygoni.txt");
-        List<Coordinate> expected = new ArrayList<>();
-        expected.add(new Coordinate(3, 3));
-        expected.add(new Coordinate(5, 5));
-        expected.add(new Coordinate(6, 5));
-        expected.add(new Coordinate(5, 6));
-        Assertions.assertEquals(expected, Task1.readPolygonFile(file));
+        Assertions.assertEquals(polygon, CheckCoordinate.readPolygonFile(file));
     }
 
     @Test
     public void testReadCoordinateFile() throws FileNotFoundException {
         File file = new File("src/test/resources/testPisteet.txt");
-        Assertions.assertEquals(new Coordinate(5, 5), Task1.readCoordinateFile(file));
+        Assertions.assertEquals(new Coordinate(5, 5), CheckCoordinate.readCoordinateFile(file));
     }
 
     @Test
     public void testGetCoordinateFromScanner() throws FileNotFoundException {
         Scanner scanner = new Scanner(new File("src/test/resources/testPisteet.txt"));
-        Assertions.assertEquals(new Coordinate(5, 5), Task1.getCoordinateFromScanner(scanner));
+        Assertions.assertNotEquals(new Coordinate(5, 1), CheckCoordinate.getCoordinateFromScanner(scanner));
     }
 }
