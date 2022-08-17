@@ -10,28 +10,26 @@ public class Task1 {
     private static boolean isOnSide;
     private static final List<Coordinate> polygonCoordinates = new ArrayList<>();
     private static Coordinate coordinate = null;
+    private static Scanner scanner;
     private static final String PATH = new File("").getAbsolutePath();
 
     public static void main(String[] args) throws FileNotFoundException {
 
         File file = new File(PATH + "/src/main/resources/pisteet.txt");
         File file2 = new File(PATH + "/src/main/resources/polygoni.txt");
+        File file3 = new File(PATH + "/src/main/resources/selvitys.txt");
 
-       // Scanner scanner = new Scanner(file);
         coordinate = readCoordinateFile(file);
-
-        //scanner = new Scanner(file2);
         readPolygonFile(file2);
-
-        //scanner.close();
 
         isInside = Coordinate.isCoordinateInsidePolygon(coordinate, polygonCoordinates);
         isOnSide = Coordinate.isCoordinateOnPolygonSide(coordinate, polygonCoordinates);
-        writeResult();
+        writeResult(file3);
+        scanner.close();
     }
 
     public static List<Coordinate> readPolygonFile(File file) throws FileNotFoundException {
-        Scanner scanner = new Scanner(file);
+        scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             polygonCoordinates.add(getCoordinateFromScanner(scanner));
         }
@@ -39,8 +37,7 @@ public class Task1 {
     }
 
     public static Coordinate readCoordinateFile(File file) throws FileNotFoundException {
-        Scanner scanner = new Scanner(file);
-          return getCoordinateFromScanner(scanner);
+        return getCoordinateFromScanner(new Scanner(file));
     }
 
     public static Coordinate getCoordinateFromScanner(Scanner scanner) {
@@ -51,8 +48,7 @@ public class Task1 {
         return new Coordinate(x, y);
     }
 
-    public static void writeResult() throws FileNotFoundException {
-        File file3 = new File(PATH + "/src/main/resources/selvitys.txt");
+    public static void writeResult(File file3) throws FileNotFoundException {
         PrintWriter printWriter = new PrintWriter(file3);
         if (isInside) {
             printWriter.println(coordinate + " on polygonin sisäpuolella");

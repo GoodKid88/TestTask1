@@ -1,4 +1,3 @@
-import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Task1Test extends TestCase {
-
+public class Task1Test {
     @Test
     public void testReadPolygonFile() throws FileNotFoundException {
-        File file = new File("src/test/resources/testPolygonCoordinates.txt");
+        File file = new File("src/test/resources/testPolygoni.txt");
         List<Coordinate> expected = new ArrayList<>();
         expected.add(new Coordinate(3, 3));
         expected.add(new Coordinate(5, 5));
@@ -23,16 +21,13 @@ public class Task1Test extends TestCase {
 
     @Test
     public void testReadCoordinateFile() throws FileNotFoundException {
-        File file = new File("src/test/resources/testCoordinate.txt");
+        File file = new File("src/test/resources/testPisteet.txt");
         Assertions.assertEquals(new Coordinate(5, 5), Task1.readCoordinateFile(file));
     }
 
     @Test
     public void testGetCoordinateFromScanner() throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("src/test/resources/testCoordinate.txt"));
+        Scanner scanner = new Scanner(new File("src/test/resources/testPisteet.txt"));
         Assertions.assertEquals(new Coordinate(5, 5), Task1.getCoordinateFromScanner(scanner));
-    }
-
-    public void testWriteResult() {
     }
 }
