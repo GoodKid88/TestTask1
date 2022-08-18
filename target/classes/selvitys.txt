@@ -1,1 +1,1 @@
-Koordinaatti(5, 4) on polygonin sisäpuolella
+Koordinaatti(5, 4) on polygonin ulkopuolella
